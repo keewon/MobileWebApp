@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Claude
+.claude/
+
+# iOS
+ios/MobileWebApp.xcodeproj/
+ios/MobileWebApp.xcworkspace/
+ios/Pods/
+ios/MobileWebApp/Info.plist
+ios/MobileWebApp/common/
+
+# Android
+android/build/
+android/app/build/
+android/local.properties
+android/.gradle/
+android/app/src/main/assets/common/
+
+# Secrets (add when available)
+ios/GoogleService-Info.plist
+android/app/google-services.json

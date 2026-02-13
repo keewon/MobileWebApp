@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <title>MobileWebApp</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+  <h1>MobileWebApp</h1>
+
+  <div class="section">
+    <h2>Bridge</h2>
+    <div class="btn-group">
+      <button id="btn-ping" class="btn-primary">Ping Bridge</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Ads</h2>
+    <div class="btn-group">
+      <button id="btn-init-ads" class="btn-primary">Init Ads</button>
+      <button id="btn-offerwall" class="btn-success">Offerwall</button>
+      <button id="btn-interstitial" class="btn-warning">Interstitial</button>
+      <button id="btn-rewarded" class="btn-warning">Rewarded</button>
+      <button id="btn-banner" class="btn-success">Show Banner</button>
+      <button id="btn-hide-banner" class="btn-danger">Hide Banner</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Log</h2>
+    <div id="log"></div>
+    <div class="btn-group" style="margin-top: 8px;">
+      <button id="btn-clear-log" class="btn-secondary">Clear Log</button>
+    </div>
+  </div>
+
+  <script src="js/bridge.js"></script>
+  <script src="js/ads.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

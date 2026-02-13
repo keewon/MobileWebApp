@@ -1,0 +1,43 @@
+name: MobileWebApp
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "15.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+
+targets:
+  MobileWebApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: MobileWebApp
+        excludes:
+          - "common/**"
+      - path: MobileWebApp/common
+        type: folder
+        buildPhase: resources
+    info:
+      path: MobileWebApp/Info.plist
+      properties:
+        CFBundleDisplayName: MobileWebApp
+        LSRequiresIPhoneOS: true
+        UILaunchStoryboardName: LaunchScreen
+        UIRequiredDeviceCapabilities:
+          - armv7
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSUserTrackingUsageDescription: "This app uses tracking to provide personalized ads and rewards."
+        GADApplicationIdentifier: "ca-app-pub-3940256099942544~1458002511"
+        TapjoySDKKey: "YOUR_TAPJOY_SDK_KEY"
+        UnityAdsGameId: "YOUR_UNITY_GAME_ID"
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.mobilewebapp
+        CODE_SIGN_STYLE: Automatic
