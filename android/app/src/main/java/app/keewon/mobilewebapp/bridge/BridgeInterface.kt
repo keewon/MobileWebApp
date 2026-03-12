@@ -1,4 +1,4 @@
-package com.example.mobilewebapp.bridge
+package app.keewon.mobilewebapp.bridge
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView

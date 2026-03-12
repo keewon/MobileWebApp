@@ -1,11 +1,11 @@
-package com.example.mobilewebapp.ads
+package app.keewon.mobilewebapp.ads
 
 import android.app.Activity
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
-import com.example.mobilewebapp.R
+import app.keewon.mobilewebapp.R
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize

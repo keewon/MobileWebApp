@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="coin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD84A"/>
+      <stop offset="100%" stop-color="#F5A623"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Coin body -->
+  <circle cx="64" cy="64" r="56" fill="url(#coin)"/>
+
+  <!-- Subtle inner border -->
+  <circle cx="64" cy="64" r="46" fill="none" stroke="#E8961E" stroke-width="2.5" opacity="0.4"/>
+
+  <!-- Letter C -->
+  <text x="64" y="84" text-anchor="middle" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="64" font-weight="700" fill="white">C</text>
+</svg>

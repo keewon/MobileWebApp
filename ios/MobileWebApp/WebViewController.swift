@@ -95,7 +95,7 @@ extension WebViewController: BridgeDelegate {
             }
 
         case "showOfferwall":
-            let placement = params["placementName"] as? String ?? "main"
+            let placement = params["placementName"] as? String ?? "offerwall_unit"
             AdManager.shared.showOfferwall(placementName: placement)
             handler.sendResponse(.success(id: requestId, data: ["shown": AnyCodable(true)]))
 

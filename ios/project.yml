@@ -1,6 +1,6 @@
 name: MobileWebApp
 options:
-  bundleIdPrefix: com.example
+  bundleIdPrefix: app.keewon
   deploymentTarget:
     iOS: "16.0"
   xcodeVersion: "15.0"
@@ -33,11 +33,11 @@ targets:
           - UIInterfaceOrientationPortrait
         NSUserTrackingUsageDescription: "This app uses tracking to provide personalized ads and rewards."
         GADApplicationIdentifier: "ca-app-pub-3940256099942544~1458002511"
-        TapjoySDKKey: "YOUR_TAPJOY_SDK_KEY"
-        UnityAdsGameId: "YOUR_UNITY_GAME_ID"
+        TapjoySDKKey: "u1Ao3VMVQ8mDEmAcLKOz5wEB3tJlv3RaFusuXgMp7lVk7DV4P9dIm2kfIoun"
+        UnityAdsGameId: "6049795"
         NSAppTransportSecurity:
           NSAllowsArbitraryLoads: true
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.mobilewebapp
+        PRODUCT_BUNDLE_IDENTIFIER: app.keewon.mobilewebapp
         CODE_SIGN_STYLE: Automatic

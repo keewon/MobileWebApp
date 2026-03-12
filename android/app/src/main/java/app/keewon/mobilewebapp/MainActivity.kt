@@ -1,4 +1,4 @@
-package com.example.mobilewebapp
+package app.keewon.mobilewebapp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,12 +6,12 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mobilewebapp.ads.AdManager
-import com.example.mobilewebapp.ads.AdManagerDelegate
-import com.example.mobilewebapp.bridge.BridgeDelegate
-import com.example.mobilewebapp.bridge.BridgeEvent
-import com.example.mobilewebapp.bridge.BridgeInterface
-import com.example.mobilewebapp.bridge.BridgeResponse
+import app.keewon.mobilewebapp.ads.AdManager
+import app.keewon.mobilewebapp.ads.AdManagerDelegate
+import app.keewon.mobilewebapp.bridge.BridgeDelegate
+import app.keewon.mobilewebapp.bridge.BridgeEvent
+import app.keewon.mobilewebapp.bridge.BridgeInterface
+import app.keewon.mobilewebapp.bridge.BridgeResponse
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), BridgeDelegate, AdManagerDelegate {

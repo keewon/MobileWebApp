@@ -1,4 +1,4 @@
-package com.example.mobilewebapp.ads
+package app.keewon.mobilewebapp.ads
 
 import android.app.Activity
 

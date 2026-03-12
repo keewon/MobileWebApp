@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mobilewebapp"
+    namespace = "app.keewon.mobilewebapp"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.mobilewebapp"
+        applicationId = "app.keewon.mobilewebapp"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

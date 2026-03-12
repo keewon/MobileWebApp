@@ -1,4 +1,4 @@
-package com.example.mobilewebapp.bridge
+package app.keewon.mobilewebapp.bridge
 
 import org.json.JSONObject
 
