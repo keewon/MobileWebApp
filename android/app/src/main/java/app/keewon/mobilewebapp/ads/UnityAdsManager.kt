@@ -24,7 +24,8 @@ class UnityAdsManager {
         val gameId = try {
             activity.packageManager
                 .getApplicationInfo(activity.packageName, PackageManager.GET_META_DATA)
-                .metaData?.getString("com.unity3d.ads.game_id") ?: ""
+                // Numeric game IDs are parsed as Int from the manifest, so read untyped
+                .metaData?.get("com.unity3d.ads.game_id")?.toString() ?: ""
         } catch (e: Exception) { "" }
 
         if (gameId.isEmpty() || gameId == "YOUR_UNITY_GAME_ID") {

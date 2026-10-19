@@ -21,6 +21,9 @@ targets:
       - path: MobileWebApp/common
         type: folder
         buildPhase: resources
+      - path: GoogleService-Info.plist
+        buildPhase: resources
+        optional: true
     info:
       path: MobileWebApp/Info.plist
       properties:
@@ -28,15 +31,13 @@ targets:
         LSRequiresIPhoneOS: true
         UILaunchStoryboardName: LaunchScreen
         UIRequiredDeviceCapabilities:
-          - armv7
+          - arm64
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         NSUserTrackingUsageDescription: "This app uses tracking to provide personalized ads and rewards."
         GADApplicationIdentifier: "ca-app-pub-3940256099942544~1458002511"
         TapjoySDKKey: "u1Ao3VMVQ8mDEmAcLKOz5wEB3tJlv3RaFusuXgMp7lVk7DV4P9dIm2kfIoun"
         UnityAdsGameId: "6049795"
-        NSAppTransportSecurity:
-          NSAllowsArbitraryLoads: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.keewon.mobilewebapp

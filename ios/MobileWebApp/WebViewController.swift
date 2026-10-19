@@ -29,6 +29,7 @@ final class WebViewController: UIViewController {
         webView = WKWebView(frame: .zero, configuration: config)
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.scrollView.bounces = false
+        webView.navigationDelegate = self
 
         #if DEBUG
         if #available(iOS 16.4, *) {
@@ -46,7 +47,9 @@ final class WebViewController: UIViewController {
     }
 
     private func setupBridge() {
-        bridgeHandler = BridgeHandler(webView: webView)
+        bridgeHandler = BridgeHandler(webView: webView) { [weak self] url in
+            self?.isTrustedURL(url) ?? false
+        }
         bridgeHandler.delegate = self
         webView.configuration.userContentController.add(bridgeHandler, name: "nativeBridge")
     }
@@ -74,6 +77,39 @@ final class WebViewController: UIViewController {
         let baseURL = URL(fileURLWithPath: commonPath)
         webView.loadFileURL(indexURL, allowingReadAccessTo: baseURL)
     }
+
+    /// Only the bundled common/ folder or the configured remote origin may use the bridge
+    fileprivate func isTrustedURL(_ url: URL?) -> Bool {
+        guard let url = url else { return false }
+        if url.isFileURL, let commonPath = Bundle.main.path(forResource: "common", ofType: nil) {
+            return url.standardizedFileURL.path.hasPrefix(URL(fileURLWithPath: commonPath).standardizedFileURL.path + "/")
+        }
+        guard let urlString = remoteBaseURL, let remote = URL(string: urlString) else { return false }
+        return url.scheme == "https" && url.scheme == remote.scheme && url.host == remote.host && url.port == remote.port
+    }
+}
+
+// MARK: - WKNavigationDelegate
+
+extension WebViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let url = navigationAction.request.url
+        // Subframes (e.g. about:blank iframes) are allowed; the bridge itself rejects non-main frames
+        if navigationAction.targetFrame?.isMainFrame == false || isTrustedURL(url) || url?.scheme == "about" {
+            decisionHandler(.allow)
+            return
+        }
+        // Untrusted pages must never get the bridge; hand them to the system
+        if let url = url {
+            UIApplication.shared.open(url)
+        }
+        decisionHandler(.cancel)
+    }
+
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        print("[WebViewController] Web content process terminated, reloading")
+        loadContent()
+    }
 }
 
 // MARK: - BridgeDelegate
@@ -86,11 +122,14 @@ extension WebViewController: BridgeDelegate {
 
         case "initAds":
             let testMode = params["testMode"] as? Bool ?? false
-            AdManager.shared.initializeAll(testMode: testMode) { success in
-                if success {
-                    handler.sendResponse(.success(id: requestId, data: ["initialized": AnyCodable(true)]))
-                } else {
-                    handler.sendResponse(.failure(id: requestId, error: "Failed to initialize ad SDKs"))
+            // ATT prompt must come before SDK init so ad SDKs can read the IDFA
+            AppDelegate.requestTrackingPermission {
+                AdManager.shared.initializeAll(testMode: testMode) { success in
+                    if success {
+                        handler.sendResponse(.success(id: requestId, data: ["initialized": AnyCodable(true)]))
+                    } else {
+                        handler.sendResponse(.failure(id: requestId, error: "Failed to initialize ad SDKs"))
+                    }
                 }
             }
 

@@ -1,11 +1,16 @@
 package app.keewon.mobilewebapp
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.webkit.RenderProcessGoneDetail
 import android.os.Bundle
+import android.webkit.WebResourceRequest
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import app.keewon.mobilewebapp.ads.AdManager
 import app.keewon.mobilewebapp.ads.AdManagerDelegate
 import app.keewon.mobilewebapp.bridge.BridgeDelegate
@@ -23,6 +28,8 @@ class MainActivity : AppCompatActivity(), BridgeDelegate, AdManagerDelegate {
     private val remoteBaseURL: String?
         get() = applicationInfo.metaData?.getString("web_content_base_url")
 
+    private val localBaseURL = "file:///android_asset/common/"
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +46,29 @@ class MainActivity : AppCompatActivity(), BridgeDelegate, AdManagerDelegate {
         webView.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
-            allowFileAccess = true
+            // file:///android_asset/ loads without this; keep other file:// paths blocked
+            allowFileAccess = false
             mediaPlaybackRequiresUserGesture = false
         }
-        webView.webViewClient = WebViewClient()
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+                if (isTrustedURL(request.url.toString())) return false
+                // Untrusted pages must never get the bridge; hand them to the system
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, request.url))
+                } catch (e: ActivityNotFoundException) {
+                    android.util.Log.w("MainActivity", "No handler for ${request.url}")
+                }
+                return true
+            }
+
+            override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
+                // Renderer crashed or was killed for memory; rebuild instead of crashing the app
+                android.util.Log.e("MainActivity", "WebView render process gone")
+                recreate()
+                return true
+            }
+        }
         webView.webChromeClient = WebChromeClient()
 
         if (BuildConfig.DEBUG) {
@@ -51,7 +77,7 @@ class MainActivity : AppCompatActivity(), BridgeDelegate, AdManagerDelegate {
     }
 
     private fun setupBridge() {
-        bridgeInterface = BridgeInterface(webView, this)
+        bridgeInterface = BridgeInterface(webView, this, ::isTrustedURL)
         webView.addJavascriptInterface(bridgeInterface, "AndroidBridge")
     }
 
@@ -64,8 +90,18 @@ class MainActivity : AppCompatActivity(), BridgeDelegate, AdManagerDelegate {
         if (!url.isNullOrEmpty()) {
             webView.loadUrl(url)
         } else {
-            webView.loadUrl("file:///android_asset/common/index.html")
+            webView.loadUrl(localBaseURL + "index.html")
         }
+    }
+
+    /** Only the bundled assets or the configured remote origin may use the bridge */
+    private fun isTrustedURL(url: String?): Boolean {
+        if (url == null) return false
+        if (url.startsWith(localBaseURL)) return true
+        val remote = remoteBaseURL?.takeIf { it.isNotEmpty() }?.toUri() ?: return false
+        val target = url.toUri()
+        return target.scheme == "https" && target.scheme == remote.scheme &&
+            target.host == remote.host && target.port == remote.port
     }
 
     // MARK: - BridgeDelegate

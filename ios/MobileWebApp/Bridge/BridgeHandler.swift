@@ -9,9 +9,11 @@ final class BridgeHandler: NSObject, WKScriptMessageHandler {
 
     weak var delegate: BridgeDelegate?
     private weak var webView: WKWebView?
+    private let isTrustedURL: (URL?) -> Bool
 
-    init(webView: WKWebView) {
+    init(webView: WKWebView, isTrustedURL: @escaping (URL?) -> Bool) {
         self.webView = webView
+        self.isTrustedURL = isTrustedURL
         super.init()
     }
 
@@ -19,6 +21,11 @@ final class BridgeHandler: NSObject, WKScriptMessageHandler {
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard message.name == "nativeBridge" else { return }
+        // Only the main frame of our own content may drive native ads
+        guard message.frameInfo.isMainFrame, isTrustedURL(message.frameInfo.request.url) else {
+            print("[BridgeHandler] Rejected message from \(message.frameInfo.request.url?.absoluteString ?? "unknown")")
+            return
+        }
         guard let jsonString = message.body as? String,
               let data = jsonString.data(using: .utf8) else {
             print("[BridgeHandler] Invalid message body")

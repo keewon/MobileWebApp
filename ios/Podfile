@@ -2,10 +2,10 @@ platform :ios, '16.0'
 use_frameworks!
 
 target 'MobileWebApp' do
-  pod 'TapjoySDK', '~> 14.6'
-  pod 'UnityAds', '~> 4.16'
-  pod 'Google-Mobile-Ads-SDK', '~> 13.0'
-  pod 'FirebaseAnalytics'
+  pod 'TapjoySDK', '~> 14.8'
+  pod 'UnityAds', '~> 4.21'
+  pod 'Google-Mobile-Ads-SDK', '~> 13.11'
+  pod 'FirebaseAnalytics', '~> 12.19'
 end
 
 post_install do |installer|

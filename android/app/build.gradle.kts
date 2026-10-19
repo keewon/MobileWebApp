@@ -1,17 +1,16 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services") apply false
 }
 
 android {
     namespace = "app.keewon.mobilewebapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "app.keewon.mobilewebapp"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
     }
@@ -31,27 +30,23 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         buildConfig = true
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.webkit:webkit:1.8.0")
+    implementation("androidx.core:core-ktx:1.18.0")
+    implementation("androidx.appcompat:appcompat:1.8.0")
+    implementation("androidx.webkit:webkit:1.17.1")
 
     // Ad SDKs
-    implementation("com.tapjoy:tapjoy-android-sdk:14.6.0")
-    implementation("com.unity3d.ads:unity-ads:4.16.6")
-    implementation("com.google.android.gms:play-services-ads:24.9.0")
+    implementation("com.tapjoy:tapjoy-android-sdk:14.8.0")
+    implementation("com.unity3d.ads:unity-ads:4.21.0")
+    implementation("com.google.android.gms:play-services-ads:25.5.0")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:34.9.0"))
+    implementation(platform("com.google.firebase:firebase-bom:35.0.2"))
     implementation("com.google.firebase:firebase-analytics")
 }
 
